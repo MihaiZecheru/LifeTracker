@@ -1,4 +1,8 @@
-﻿namespace LifeTracker;
+﻿using Newtonsoft.Json;
+
+namespace LifeTracker;
+
+
 
 internal struct User
 {
@@ -28,16 +32,16 @@ internal struct User
     /// </summary>
     public EntryStatistics EntryStats { get; }
     /// <summary>
-    /// User entries
+    /// The IDs of every entry written by the user
     /// </summary>
-    public List<Entry> Entries { get; }
+    public List<int> EntryIDs { get; }
 
-    public User(int id, Authentication auth, DateOnly birthday, EntryStatistics entryStats, List<Entry> entries)
+    public User(int id, Authentication auth, DateOnly birthday, EntryStatistics entryStats, List<int> entryIDs)
     {
         ID = id;
         Auth = auth;
         Birthday = birthday;
         EntryStats = entryStats;
-        Entries = entries;
+        EntryIDs = entryIDs;
     }
 }
