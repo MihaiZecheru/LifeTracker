@@ -11,7 +11,7 @@ public struct Entry
     /// </summary>
     public string DetailedSummary { get; }
     /// <summary>
-    /// What day is this <see cref="Entry"/> for?
+    /// What date is this <see cref="Entry"/> for?
     /// </summary>
     public DateOnly For { get; }
 

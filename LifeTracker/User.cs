@@ -32,16 +32,16 @@ internal struct User
     /// </summary>
     public EntryStatistics EntryStats { get; }
     /// <summary>
-    /// The IDs of every entry written by the user
+    /// The info for every entry written by the user, including the entry's ID in the database
     /// </summary>
-    public List<int> EntryIDs { get; }
+    public List<EntryInfo> EntryInfos { get; }
 
-    public User(int id, Authentication auth, DateOnly birthday, EntryStatistics entryStats, List<int> entryIDs)
+    public User(int id, Authentication auth, DateOnly birthday, EntryStatistics entryStats, List<EntryInfo> entryInfos)
     {
         ID = id;
         Auth = auth;
         Birthday = birthday;
         EntryStats = entryStats;
-        EntryIDs = entryIDs;
+        EntryInfos = entryInfos;
     }
 }

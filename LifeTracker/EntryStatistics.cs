@@ -37,13 +37,25 @@ public class EntryStatistics
         EntryDates = entryDates;
     }
 
+    public static EntryStatistics ParseFromString(dynamic raw)
+    {
+        return new EntryStatistics(
+            totalEntries: raw.totalEntries,
+            longestStreak: new DateRange(raw.longestStreak.start, raw.longestStreak.end, raw.longestStreak.length),
+            currentStreak: new DateRange(raw.currentStreak.start, raw.currentStreak.end, raw.currentStreak.length),
+            firstEntryDate: new DateOnly(raw.firstEntryDate.year, raw.firstEntryDate.month, raw.firstEntryDate.day),
+            lastEntryDate: new DateOnly(raw.lastEntryDate.year, raw.lastEntryDate.month, raw.lastEntryDate.day),
+            entryDates: raw.entryDates
+        );
+    }
+
     public void AddEntryDate(DateOnly newDate)
     {
         EntryDates.Add(newDate);
         TotalEntries++;
         
         CurrentStreak.AddDay(newDate);
-        if (CurrentStreak.Days > LongestStreak.Days)
+        if (CurrentStreak.Length > LongestStreak.Length)
         {
             LongestStreak = CurrentStreak;
         }
