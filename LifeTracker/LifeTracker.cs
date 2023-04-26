@@ -10,11 +10,10 @@ public class LifeTracker
 
     public static void Main()
     {
-        // Set ActiveUser
-        AnsiConsole.Status().Start("[yellow]Fetching User Data[/]", async ctx =>
-        {
-            ctx.SpinnerStyle = Yellow;
-        });
+        // Title screen
+        Console.CursorVisible = false;
+        AnsiConsole.Write(new FigletText("LifeTracker").Color(Color.DeepPink3).Centered());
+        Console.ReadKey();
 
         // Create and display calendar
         ActiveCalendar = new Calendar();
