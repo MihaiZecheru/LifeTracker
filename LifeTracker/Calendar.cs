@@ -19,13 +19,18 @@ public class Calendar
             );
     }
 
+    /// <summary>
+    /// Show the calendar and the currently selected entry in the console
+    /// </summary>
     public void Display()
     {
+        Console.Clear();
+        Console.Write("\x1b[3J");
         Console.CursorVisible = false;
 
         DisplayLayout["CalendarDisplay"].Update(
             Align.Center(
-                new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day)
+                new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day).AddCalendarEvent(ActiveDate.ToDateTime(new TimeOnly(0, 0)))
                     .HighlightStyle(new Style(Color.DeepPink3))
                     .HeaderStyle(new Style(Color.DeepPink3))
                     .BorderStyle(new Style(Color.Yellow))
@@ -82,5 +87,77 @@ public class Calendar
             detailedSummary: lines[(int)EntryFile.DetailedSummaryIndex],
             _for: StringToDateOnly.Convert(lines[(int)EntryFile.ForIndex])
         );
+    }
+
+    /// <summary>
+    /// Highlight the next day in the <see cref="Calendar"/>
+    /// </summary>
+    public void NextDay()
+    {
+        ActiveDate = ActiveDate.AddDays(1);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one week in the future in the <see cref="Calendar"/>
+    /// </summary>
+    public void NextWeek()
+    {
+        ActiveDate = ActiveDate.AddDays(7);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one month in the future in the <see cref="Calendar"/>
+    /// </summary>
+    public void NextMonth()
+    {
+        ActiveDate = ActiveDate.AddMonths(1);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one year in the future in the <see cref="Calendar"/>
+    /// </summary>
+    public void NextYear()
+    {
+        ActiveDate = ActiveDate.AddYears(1);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the previous day in the <see cref="Calendar"/>
+    /// </summary>
+    public void PreviousDay()
+    {
+        ActiveDate = ActiveDate.AddDays(-1);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one week in the past in the <see cref="Calendar"/>
+    /// </summary>
+    public void PreviousWeek()
+    {
+        ActiveDate = ActiveDate.AddDays(-7);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one month in the past in the <see cref="Calendar"/>
+    /// </summary>
+    public void PreviousMonth()
+    {
+        ActiveDate = ActiveDate.AddMonths(-1);
+        Display();
+    }
+
+    /// <summary>
+    /// Highlight the day one year in the past in the <see cref="Calendar"/>
+    /// </summary>
+    public void PreviousYear()
+    {
+        ActiveDate = ActiveDate.AddYears(-1);
+        Display();
     }
 }
