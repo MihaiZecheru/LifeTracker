@@ -14,9 +14,9 @@ public class Calendar
         
         DisplayLayout = new Layout("Root")
             .SplitRows(
-                new Layout("CalendarDisplay"),
-                new Layout("EntryDisplay"))
-            .Ratio(2);
+                new Layout("CalendarDisplay").Size(12),
+                new Layout("EntryDisplay")
+            );
     }
 
     public void Display()
@@ -24,30 +24,40 @@ public class Calendar
         Console.CursorVisible = false;
 
         DisplayLayout["CalendarDisplay"].Update(
-            Align.Center(new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day), VerticalAlignment.Middle)
+            Align.Center(
+                new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day)
+                    .HighlightStyle(new Style(Color.DeepPink3))
+                    .HeaderStyle(new Style(Color.DeepPink3))
+                    .BorderStyle(new Style(Color.Yellow))
+            )
         );
 
         Entry? selectedEntry = this.Get(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day);
 
         if (selectedEntry == null)
         {
-            DisplayLayout["EntryDisplay"].Update(new Rows(
+            var today = DateTime.Today;
+            bool entryWrittenToday = selectedEntry?.For == new DateOnly(today.Year, today.Month, today.Day);
+
+            DisplayLayout["EntryDisplay"].Update(
                 new Panel(
-                    new Text($"No entry made on {ActiveDate.Day}-{ActiveDate.Month}-{ActiveDate.Year}").Centered()
-                ).Expand(),
-                new Panel(
-                    new Text("")
-                )
-            ));
+                    new Rows(
+                        new Text("No entry written " + (entryWrittenToday ? "today" : $"on {ActiveDate.Day}-{ActiveDate.Month}-{ActiveDate.Year}"), new Style(Color.DeepPink3)).Centered(),
+                        new Rule().RuleStyle(new Style(Color.Yellow))
+                    )
+                ).Expand().BorderColor(Color.Yellow)
+            );
         }
         else
         {
             DisplayLayout["EntryDisplay"].Update(
-                new Text(
-                    selectedEntry?.OneSentenceSummary +
-                    "\n\n" +
-                    selectedEntry?.DetailedSummary
-                )
+                new Panel(
+                    new Rows(
+                        new Text(selectedEntry?.OneSentenceSummary, new Style(Color.Yellow)).Centered(),
+                        new Rule(),
+                        new Text(selectedEntry?.DetailedSummary, new Style(Color.White)).LeftJustified()
+                    )
+                ).Expand()
             );
         }
 
