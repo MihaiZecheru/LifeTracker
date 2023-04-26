@@ -5,11 +5,25 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>calendar.ico</ApplicationIcon>
+    <PackageIcon>calendar.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="calendar.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Z:\Downloads\calendar.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="Spectre.Console.ImageSharp" Version="0.46.0" />
   </ItemGroup>
 
 </Project>
