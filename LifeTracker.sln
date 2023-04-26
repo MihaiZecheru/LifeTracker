@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LifeTracker", "LifeTracker\LifeTracker.csproj", "{9EFEE560-0206-465C-B2F6-629A11CBE9F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDB-SDK", "..\MDB-SDK\MDB-SDK\MDB-SDK.csproj", "{F087987B-4463-48E7-91C3-BFBC4BE3357D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{9EFEE560-0206-465C-B2F6-629A11CBE9F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EFEE560-0206-465C-B2F6-629A11CBE9F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EFEE560-0206-465C-B2F6-629A11CBE9F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F087987B-4463-48E7-91C3-BFBC4BE3357D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F087987B-4463-48E7-91C3-BFBC4BE3357D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F087987B-4463-48E7-91C3-BFBC4BE3357D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F087987B-4463-48E7-91C3-BFBC4BE3357D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

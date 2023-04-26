@@ -6,11 +6,9 @@ public class Calendar
 {
     private Layout DisplayLayout;
     private DateOnly ActiveDate;
-    private EntryInfoMap EntriesMap;
-    public Calendar(EntryInfoMap entriesMap)
-    {
-        EntriesMap = entriesMap;
 
+    public Calendar()
+    {
         DateTime today = DateTime.Now;
         ActiveDate = new DateOnly(today.Year, today.Month, today.Day);
         
@@ -27,17 +25,43 @@ public class Calendar
             Align.Center(new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day), VerticalAlignment.Middle)
         );
 
-        int selectedEntryID = EntriesMap.Get(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day);
-        //Entry entry = TODO: get from API
+        Entry? selectedEntry = this.Get(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day);
 
-        DisplayLayout["EntryDisplay"].Update(
-            new Text(""
-                //selectedEntry.OneSentenceSummary +
-                //"\n\n" +
-                //selectedEntry.DetailedSummary
-            )
-        );
+        if (selectedEntry == null)
+        {
+            DisplayLayout["EntryDisplay"].Update(new Text($"No entry made on {ActiveDate.Day}-{ActiveDate.Month}-{ActiveDate.Year}"));
+        }
+        else
+        {
+            DisplayLayout["EntryDisplay"].Update(
+                new Text(
+                    selectedEntry?.OneSentenceSummary +
+                    "\n\n" +
+                    selectedEntry?.DetailedSummary
+                )
+            );
+        }
 
         AnsiConsole.Write(DisplayLayout);
+    }
+
+    /// <summary>
+    /// Get an <see cref="Entry"/> from the filesystem
+    /// </summary>
+    /// <param name="year">The year the entry was written</param>
+    /// <param name="month">The month the entry was written</param>
+    /// <param name="day">The day the entry was written</param>
+    /// <returns>The parsed <see cref="Entry"/> if an entry exists for the given day, otherwise <see langword="null"/></returns>
+    internal Entry? Get(int year, int month, int day)
+    {
+        string filepath = @$"C:/LifeTracker/Entry/{year}/{month}/{day}.entry";
+        if (!File.Exists(filepath)) return null;
+
+        string[] lines = File.ReadAllLines(filepath);
+        return new Entry(oneSentenceSummary:
+            lines[(int)EntryFile.OneSentenceSummaryIndex],
+            detailedSummary: lines[(int)EntryFile.DetailedSummaryIndex],
+            _for: StringToDateOnly.Convert(lines[(int)EntryFile.ForIndex])
+        );
     }
 }

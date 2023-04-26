@@ -1,12 +1,7 @@
 {
   "profiles": {
     "LifeTracker": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "MDB_API_KEY": "d267f2e2-8304-4933-855f-c5504e259a6e",
-        "MDB_USER_ID": "25",
-        "MDB_ENVIRONMENT_NAME": "LifeTracker"
-      }
+      "commandName": "Project"
     }
   }
 }
