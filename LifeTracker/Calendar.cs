@@ -21,6 +21,8 @@ public class Calendar
 
     public void Display()
     {
+        Console.CursorVisible = false;
+
         DisplayLayout["CalendarDisplay"].Update(
             Align.Center(new Spectre.Console.Calendar(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day), VerticalAlignment.Middle)
         );
@@ -29,7 +31,14 @@ public class Calendar
 
         if (selectedEntry == null)
         {
-            DisplayLayout["EntryDisplay"].Update(new Text($"No entry made on {ActiveDate.Day}-{ActiveDate.Month}-{ActiveDate.Year}"));
+            DisplayLayout["EntryDisplay"].Update(new Rows(
+                new Panel(
+                    new Text($"No entry made on {ActiveDate.Day}-{ActiveDate.Month}-{ActiveDate.Year}").Centered()
+                ).Expand(),
+                new Panel(
+                    new Text("")
+                )
+            ));
         }
         else
         {
