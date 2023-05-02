@@ -60,6 +60,7 @@ public class Calendar
 
         Entry? selectedEntry = this.Get(ActiveDate.Year, ActiveDate.Month, ActiveDate.Day);
 
+        // No entry exists - write "no entry written for {date}"
         if (selectedEntry == null)
         {
             var today = DateTime.Today;
@@ -79,6 +80,7 @@ public class Calendar
                 ).Expand().BorderColor(Color.Yellow)
             );
         }
+        // Entry exists - display it to console
         else
         {
             DisplayLayout["EntryDisplay"].Update(
@@ -107,11 +109,12 @@ public class Calendar
         string filepath = @$"C:/LifeTracker/Entry/{year}/{month}/{day}.entry";
         if (!File.Exists(filepath)) return null;
 
-        string[] lines = File.ReadAllLines(filepath);
-        return new Entry(oneSentenceSummary:
-            lines[(int)EntryFile.OneSentenceSummaryIndex],
-            detailedSummary: lines[(int)EntryFile.DetailedSummaryIndex],
-            _for: StringToDateOnly.Convert(lines[(int)EntryFile.ForIndex])
+        string[] lines = File.ReadAllText(filepath).Split(Entry.SEP);
+
+        return new Entry(
+            oneSentenceSummary: lines[0],
+            detailedSummary: lines[1],
+            _for: new DateOnly(year, month, day)
         );
     }
 
@@ -123,6 +126,16 @@ public class Calendar
     public Entry? Get(DateOnly date)
     {
         return Get(date.Year, date.Month, date.Day);
+    }
+
+    /// <summary>
+    /// Save an <see cref="Entry"/> for the given day in the calendar
+    /// </summary>
+    /// <param name="entry">The <see cref="Entry"/> to save</param>
+    public void SetEntry(Entry entry)
+    {
+        string filepath = $@"C:/LifeTracker/Entry/{entry.For.Year}/{entry.For.Month}/{entry.For.Day}.entry";
+        File.WriteAllText(filepath, entry.ToString());
     }
 
     /// <summary>
@@ -208,8 +221,8 @@ public class Calendar
     /// <summary>
     /// Get the currently selected date as a string
     /// </summary>
-    public string SelectedDateString()
+    public string SelectedDateFilePath()
     {
-        return $"{ActiveDate.Year}-{FormatMonth(ActiveDate.Month)}-{FormatDay(ActiveDate.Day)}";
+        return @$"C:/LifeTracker/Entry/{ActiveDate.Year}/{ActiveDate.Month}/{ActiveDate.Day}.entry";
     }
 }
