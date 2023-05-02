@@ -102,7 +102,7 @@ public class Calendar
     /// <param name="month">The month the entry was written</param>
     /// <param name="day">The day the entry was written</param>
     /// <returns>The parsed <see cref="Entry"/> if an entry exists for the given day, otherwise <see langword="null"/></returns>
-    internal Entry? Get(int year, int month, int day)
+    public Entry? Get(int year, int month, int day)
     {
         string filepath = @$"C:/LifeTracker/Entry/{year}/{month}/{day}.entry";
         if (!File.Exists(filepath)) return null;
@@ -113,6 +113,16 @@ public class Calendar
             detailedSummary: lines[(int)EntryFile.DetailedSummaryIndex],
             _for: StringToDateOnly.Convert(lines[(int)EntryFile.ForIndex])
         );
+    }
+
+    /// <summary>
+    /// Get an <see cref="Entry"/> from the filesystem
+    /// </summary>
+    /// <param name="date">The date the entry was written</param>
+    /// <returns>The parsed <see cref="Entry"/> if an entry exists for the given day, otherwise <see langword="null"/></returns>
+    public Entry? Get(DateOnly date)
+    {
+        return Get(date.Year, date.Month, date.Day);
     }
 
     /// <summary>
@@ -185,5 +195,21 @@ public class Calendar
     {
         ActiveDate = ActiveDate.AddYears(-1);
         Display();
+    }
+
+    /// <summary>
+    /// Get the currently selected date
+    /// </summary>
+    public DateOnly SelectedDate()
+    {
+        return ActiveDate;
+    }
+
+    /// <summary>
+    /// Get the currently selected date as a string
+    /// </summary>
+    public string SelectedDateString()
+    {
+        return $"{ActiveDate.Year}-{FormatMonth(ActiveDate.Month)}-{FormatDay(ActiveDate.Day)}";
     }
 }
