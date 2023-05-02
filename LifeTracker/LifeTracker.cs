@@ -52,7 +52,8 @@ public class LifeTracker
                     break;
 
                 case ConsoleKey.Enter:
-                    // TODO: Entry editor here
+                    if (ActiveCalendar.Get())
+
                     break;
             }
         }
