@@ -69,7 +69,7 @@
             cancelbtn.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             cancelbtn.Location = new Point(12, 407);
             cancelbtn.Name = "cancelbtn";
-            cancelbtn.Size = new Size(412, 31);
+            cancelbtn.Size = new Size(385, 31);
             cancelbtn.TabIndex = 2;
             cancelbtn.Text = "Cancel";
             cancelbtn.UseVisualStyleBackColor = true;
