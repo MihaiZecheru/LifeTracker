@@ -48,6 +48,7 @@
             short_summary_entry.Size = new Size(776, 22);
             short_summary_entry.TabIndex = 0;
             short_summary_entry.TextChanged += short_summary_entry_TextChanged;
+            short_summary_entry.Enter += short_summary_entry_Enter;
             short_summary_entry.KeyDown += short_summary_entry_KeyDown;
             short_summary_entry.KeyPress += short_summary_entry_KeyPress;
             // 
@@ -57,10 +58,11 @@
             detailed_summary_entry.Location = new Point(12, 69);
             detailed_summary_entry.Multiline = true;
             detailed_summary_entry.Name = "detailed_summary_entry";
-            detailed_summary_entry.PlaceholderText = "Detailed description - include anything you might want to remember";
+            detailed_summary_entry.PlaceholderText = "Details - include anything you might want to remember";
             detailed_summary_entry.Size = new Size(776, 332);
             detailed_summary_entry.TabIndex = 1;
             detailed_summary_entry.TextChanged += detailed_summary_entry_TextChanged;
+            detailed_summary_entry.Enter += detailed_summary_entry_Enter;
             detailed_summary_entry.KeyDown += detailed_summary_entry_KeyDown;
             detailed_summary_entry.KeyPress += detailed_summary_entry_KeyPress;
             // 

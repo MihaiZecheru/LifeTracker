@@ -10,19 +10,40 @@ public partial class EntryEditor : Form
     /// <summary>
     /// For creating a new Entry
     /// </summary>
-    public EntryEditor()
+    public EntryEditor(string stringdate)
     {
         InitializeComponent();
+        date_display.Text = stringdate;
+        date_display.Location = new Point((this.Width - date_display.Width) / 2, date_display.Location.Y);
+        ToolTips();
     }
 
     /// <summary>
     /// For editing an existing Entry
     /// </summary>
-    public EntryEditor(string short_summary, string detailed_summary)
+    public EntryEditor(string short_summary, string detailed_summary, string stringdate)
     {
         InitializeComponent();
         short_summary_entry.Text = short_summary;
         detailed_summary_entry.Text = detailed_summary;
+        date_display.Text = stringdate;
+        date_display.Location = new Point((this.Width - date_display.Width) / 2, date_display.Location.Y);
+        ToolTips();
+    }
+
+    /// <summary>
+    /// Setup all tooltips on the form
+    /// </summary>
+    private void ToolTips()
+    {
+        ToolTip toolTip = new ToolTip();
+        toolTip.SetToolTip(cancelbtn, "Cancel (Esc)");
+        toolTip.SetToolTip(savebtn, "Save (Ctrl + S)");
+        toolTip.SetToolTip(short_summary_entry, "One sentence summary - what was the main thing you did today?");
+        toolTip.SetToolTip(detailed_summary_entry, "Details - include anything you might want to remember");
+        toolTip.SetToolTip(short_summary_chars_counter, "Max characters for summary");
+        toolTip.SetToolTip(detailed_summary_chars_counter, "Max lines for details");
+        toolTip.SetToolTip(date_display, "Date of entry");
     }
 
     private void EntryEditor_Load(object sender, EventArgs e)
@@ -148,5 +169,15 @@ public partial class EntryEditor : Form
         {
             e.SuppressKeyPress = true;
         }
+    }
+
+    private void short_summary_entry_Enter(object sender, EventArgs e)
+    {
+        short_summary_entry.SelectionStart = short_summary_entry.TextLength;
+    }
+
+    private void detailed_summary_entry_Enter(object sender, EventArgs e)
+    {
+        detailed_summary_entry.SelectionStart = detailed_summary_entry.TextLength;
     }
 }
