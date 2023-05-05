@@ -36,4 +36,3 @@ public struct DateRange
         Length++;
     }
 }
-
