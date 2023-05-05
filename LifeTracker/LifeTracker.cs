@@ -65,15 +65,22 @@ public class LifeTracker
                 case ConsoleKey.Enter:
                     DateOnly date = ActiveCalendar.SelectedDate();
 
-                    // Edit existing entry if it exists
-                    if (ActiveCalendar.Get(date) != null)
+                    // Users can create/edit entries for ereyesterday, yesterday, & today
+                    
+                    //  today                                            yesterday                                                    ereyesterday
+                    if (date == DateOnly.FromDateTime(DateTime.Today) || date == DateOnly.FromDateTime(DateTime.Today.AddDays(-1)) || date == DateOnly.FromDateTime(DateTime.Today.AddDays(-2)))
                     {
-                        EditEntry(ActiveCalendar.Get(ActiveCalendar.SelectedDate()));
-                    }
-                    // Only create new entry if the entry is from today
-                    else if (date == DateOnly.FromDateTime(DateTime.Today))
-                    {
-                        CreateEntry(date);
+                        // Check if an entry exists for the date
+                        if (ActiveCalendar.Get(date) == null)
+                        {
+                            // Create new entry
+                            CreateEntry(date);
+                        }
+                        else
+                        {
+                            // Edit existing entry
+                            EditEntry(ActiveCalendar.Get(date)!);
+                        }
                     }
                     
                     break;
@@ -84,20 +91,20 @@ public class LifeTracker
     /// <summary>
     /// Open the <see cref="EntryEditor"/> to edit an existing <see cref="Entry"/>
     /// </summary>
-    private static void OpenEntryEditor(string short_summary, string detailed_summary)
+    private static void OpenEntryEditor(string short_summary, string detailed_summary, DateOnly date)
     {
         new Thread(() => {
-            EntryEditor.Program.Main(short_summary, detailed_summary);
+            EntryEditor.Program.Main(short_summary, detailed_summary, date);
         }).Start();
     }
 
     /// <summary>
     /// Open the <see cref="EntryEditor"/> to create a new <see cref="Entry"/>
     /// </summary>
-    private static void OpenEntryEditor()
+    private static void OpenEntryEditor(DateOnly date)
     {
         new Thread(() => {
-            EntryEditor.Program.Main();
+            EntryEditor.Program.Main(date);
         }).Start();
     }
 
@@ -107,7 +114,7 @@ public class LifeTracker
     /// <param name="entry">The existing <see cref="Entry"/> to edit</param>
     private static void EditEntry(Entry entry)
     {
-        OpenEntryEditor(entry.OneSentenceSummary, entry.DetailedSummary); // TODO: send the entry OSS & DS to the winform
+        OpenEntryEditor(entry.OneSentenceSummary, entry.DetailedSummary, entry.For);
         ListenForFormEvents(entry.For);
     }
 
@@ -117,7 +124,7 @@ public class LifeTracker
     /// <param name="date">The date to create the <see cref="Entry"/> on</param>
     private static void CreateEntry(DateOnly date)
     {
-        OpenEntryEditor();
+        OpenEntryEditor(date);
         ListenForFormEvents(date);
     }
 
