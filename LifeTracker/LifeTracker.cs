@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using System.Net;
+using System.Windows.Forms.VisualStyles;
 
 namespace LifeTracker;
 
@@ -67,7 +68,7 @@ public class LifeTracker
                     // Edit existing entry if it exists
                     if (ActiveCalendar.Get(date) != null)
                     {
-                        EditEntry(ActiveCalendar.Get(ActiveCalendar.SelectedDate());
+                        EditEntry(ActiveCalendar.Get(ActiveCalendar.SelectedDate()));
                     }
                     // Only create new entry if the entry is from today
                     else if (date == DateOnly.FromDateTime(DateTime.Today))
@@ -81,11 +82,23 @@ public class LifeTracker
     }
 
     /// <summary>
-    /// Open the <see cref="EntryEditor"/>
+    /// Open the <see cref="EntryEditor"/> to edit an existing <see cref="Entry"/>
+    /// </summary>
+    private static void OpenEntryEditor(string short_summary, string detailed_summary)
+    {
+        new Thread(() => {
+            EntryEditor.Program.Main(short_summary, detailed_summary);
+        }).Start();
+    }
+
+    /// <summary>
+    /// Open the <see cref="EntryEditor"/> to create a new <see cref="Entry"/>
     /// </summary>
     private static void OpenEntryEditor()
     {
-        EntryEditor.Program.Main();
+        new Thread(() => {
+            EntryEditor.Program.Main();
+        }).Start();
     }
 
     /// <summary>
@@ -94,7 +107,7 @@ public class LifeTracker
     /// <param name="entry">The existing <see cref="Entry"/> to edit</param>
     private static void EditEntry(Entry entry)
     {
-        OpenEntryEditor(); // TODO: send the entry OSS & DS to the winform
+        OpenEntryEditor(entry.OneSentenceSummary, entry.DetailedSummary); // TODO: send the entry OSS & DS to the winform
         ListenForFormEvents(entry.For);
     }
 
@@ -118,31 +131,30 @@ public class LifeTracker
     {
         using var listener = new HttpListener();
         listener.Prefixes.Add("http://localhost:8001/");
-
         listener.Start();
-
+        
         HttpListenerContext ctx = listener.GetContext();
         HttpListenerRequest req = ctx.Request;
+        HttpListenerResponse res = ctx.Response;
 
-        // EntryEditor has returned the written entry as a string in the format of: "oneSentenceSummary{<@SEP>}detailedSummary"
-        if (ctx.Response.StatusCode == 200)
+        HandleListenerResponse(req, date);
+    }
+
+    private static void HandleListenerResponse(HttpListenerRequest req, DateOnly date)
+    {
+        if (req.Url.AbsolutePath == "/entry")
         {
-            string text;
-            using (var reader = new StreamReader(req.InputStream, req.ContentEncoding))
-            {
-                text = reader.ReadToEnd();
-            }
+            string short_summary = req.QueryString.GetValues("short_summary")![0];
+            string detailed_summary = req.QueryString.GetValues("detailed_summary")![0];
 
-            Entry entry = Entry.ParseFromString(text, date);
+            Entry entry = new Entry(short_summary, detailed_summary, date);
             ActiveCalendar.SetEntry(entry);
+            ListenForKeypress = true;
         }
         // EntryEditor has been closed
-        else if (ctx.Response.StatusCode == 100)
+        else if (req.Url.AbsolutePath == "/cancel")
         {
             ListenForKeypress = true;
         }
     }
 }
-
-// TODO: create the winform and have it send a message to the http listener which contains the entry info (entry.ToString() is the format)
-// https://zetcode.com/csharp/httplistener/

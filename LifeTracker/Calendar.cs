@@ -86,11 +86,11 @@ public class Calendar
             DisplayLayout["EntryDisplay"].Update(
                 new Panel(
                     new Rows(
-                        new Text(selectedEntry?.OneSentenceSummary, new Style(Color.Yellow)).Centered(),
-                        new Rule(),
+                        new Text(selectedEntry?.OneSentenceSummary, new Style(Color.DeepPink3)).Centered(),
+                        new Rule().RuleStyle(new Style(Color.Yellow)),
                         new Text(selectedEntry?.DetailedSummary, new Style(Color.White)).LeftJustified()
                     )
-                ).Expand()
+                ).Expand().BorderColor(Color.Yellow)
             );
         }
 
@@ -108,14 +108,7 @@ public class Calendar
     {
         string filepath = @$"C:/LifeTracker/Entry/{year}/{month}/{day}.entry";
         if (!File.Exists(filepath)) return null;
-
-        string[] lines = File.ReadAllText(filepath).Split(Entry.SEP);
-
-        return new Entry(
-            oneSentenceSummary: lines[0],
-            detailedSummary: lines[1],
-            _for: new DateOnly(year, month, day)
-        );
+        return new Entry(filepath, new DateOnly(year, month, day));
     }
 
     /// <summary>
@@ -134,8 +127,13 @@ public class Calendar
     /// <param name="entry">The <see cref="Entry"/> to save</param>
     public void SetEntry(Entry entry)
     {
+        string parent_dir = $@"C:/LifeTracker/Entry/{entry.For.Year}/{entry.For.Month}/";
         string filepath = $@"C:/LifeTracker/Entry/{entry.For.Year}/{entry.For.Month}/{entry.For.Day}.entry";
+
+        if (!Directory.Exists(parent_dir)) Directory.CreateDirectory(parent_dir);
         File.WriteAllText(filepath, entry.ToString());
+
+        Display();
     }
 
     /// <summary>

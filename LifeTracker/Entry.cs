@@ -47,18 +47,6 @@ public class Entry
     }
 
     /// <summary>
-    /// Create an <see cref="Entry"/> object from a string containing the <see cref="OneSentenceSummary"/> and <see cref="DetailedSummary"/> separated by <see cref="SEP"/>
-    /// </summary>
-    /// <param name="entryString">The string to parse</param>
-    /// <param name="date">The date to assign the <see cref="Entry"/></param>
-    /// <returns>The parsed <see cref="Entry"/></returns>
-    public static Entry ParseFromString(string entryString, DateOnly date)
-    {
-        string[] lines = entryString.Split(SEP);
-        return new Entry(lines[0], lines[1], date);
-    }
-
-    /// <summary>
     /// Convert the <see cref="Entry"/> to a string for saving to file
     /// </summary>
     public override string ToString()
