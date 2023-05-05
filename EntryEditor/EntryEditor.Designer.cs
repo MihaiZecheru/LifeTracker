@@ -110,11 +110,11 @@
             // detailed_summary_chars_counter
             // 
             detailed_summary_chars_counter.AutoSize = true;
-            detailed_summary_chars_counter.Location = new Point(746, 23);
+            detailed_summary_chars_counter.Location = new Point(758, 23);
             detailed_summary_chars_counter.Name = "detailed_summary_chars_counter";
-            detailed_summary_chars_counter.Size = new Size(42, 15);
+            detailed_summary_chars_counter.Size = new Size(30, 15);
             detailed_summary_chars_counter.TabIndex = 6;
-            detailed_summary_chars_counter.Text = "0/1652";
+            detailed_summary_chars_counter.Text = "0/14";
             detailed_summary_chars_counter.TextAlign = ContentAlignment.TopRight;
             // 
             // EntryEditor
