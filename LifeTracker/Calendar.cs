@@ -41,7 +41,7 @@ public class Calendar
     }
 
     /// <summary>
-    /// Show the calendar and the currently selected entry in the console
+    /// Show the calendar and the currently selected entry in the console. Used to update the calendar display
     /// </summary>
     public void Display()
     {
