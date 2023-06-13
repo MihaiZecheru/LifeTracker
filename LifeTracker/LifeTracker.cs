@@ -44,22 +44,41 @@ public class LifeTracker
             bool ctrl = keyinfo.Modifiers.HasFlag(ConsoleModifiers.Control);
             bool shift = keyinfo.Modifiers.HasFlag(ConsoleModifiers.Shift);
 
+            /*
+             * Right & Left arrows: next/previous day
+             * Down & Up arrows: next/previous week
+             * 
+             * Shift + Right & Left arrows: next/previous month
+             * Shift + Down & Up arrows: next/previous month
+             * 
+             * Ctrl + Right & Left arrows: next/previous year
+             * Ctrl + Down & Up arrows: next/previous year
+             */
+
             switch (keyinfo.Key)
             {
                 case ConsoleKey.RightArrow:
-                case ConsoleKey.DownArrow:
-                    if (ctrl && shift) ActiveCalendar.NextYear();
-                    else if (ctrl)     ActiveCalendar.NextMonth();
-                    else if (shift)    ActiveCalendar.NextWeek();
-                    else               ActiveCalendar.NextDay();
+                    if (shift)      ActiveCalendar.NextMonth();
+                    else if (ctrl)  ActiveCalendar.NextYear();
+                    else            ActiveCalendar.NextDay();
                     break;
 
                 case ConsoleKey.LeftArrow:
+                    if (shift)      ActiveCalendar.PreviousMonth();
+                    else if (ctrl)  ActiveCalendar.PreviousYear();
+                    else            ActiveCalendar.PreviousDay();
+                    break;
+
                 case ConsoleKey.UpArrow:
-                    if (ctrl && shift) ActiveCalendar.PreviousYear();
-                    else if (ctrl)     ActiveCalendar.PreviousMonth();
-                    else if (shift)    ActiveCalendar.PreviousWeek();
-                    else               ActiveCalendar.PreviousDay();
+                    if (shift)      ActiveCalendar.PreviousMonth();
+                    else if (ctrl)  ActiveCalendar.PreviousYear();
+                    else            ActiveCalendar.PreviousWeek();
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    if (shift)      ActiveCalendar.NextMonth();
+                    else if (ctrl)  ActiveCalendar.NextYear();
+                    else            ActiveCalendar.NextWeek();
                     break;
 
                 case ConsoleKey.Enter:
