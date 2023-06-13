@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms.VisualStyles;
 
 namespace LifeTracker;
@@ -19,6 +20,9 @@ public class LifeTracker
         // Create and display calendar
         ActiveCalendar = new Calendar();
         ActiveCalendar.Display();
+
+        // Listen to console resize events in order to update the calendar after resize
+        StartConsoleResizeListener();
 
         // Listen to key events in order to update the calendar
         StartKeypressListener();
@@ -111,6 +115,28 @@ public class LifeTracker
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Listen to console resize events and update the calendar after resize
+    /// </summary>
+    private static void StartConsoleResizeListener()
+    {
+        new Thread(() =>
+        {
+            int x = Console.WindowWidth;
+            int y = Console.WindowHeight;
+
+            while (true)
+            {
+                if (x == Console.WindowWidth && y == Console.WindowHeight) continue;
+                
+                // Update calendar, console window has been resized
+                x = Console.WindowWidth;
+                y = Console.WindowHeight;
+                ActiveCalendar.Display();
+            }
+        }).Start();
     }
 
     /// <summary>
