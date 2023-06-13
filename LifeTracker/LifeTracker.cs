@@ -65,10 +65,16 @@ public class LifeTracker
                 case ConsoleKey.Enter:
                     DateOnly date = ActiveCalendar.SelectedDate();
 
-                    // Users can create/edit entries for ereyesterday, yesterday, & today
+                    // Users can create/edit entries for today and up to 5 days in the past
                     
-                    //  today                                            yesterday                                                    ereyesterday
-                    if (date == DateOnly.FromDateTime(DateTime.Today) || date == DateOnly.FromDateTime(DateTime.Today.AddDays(-1)) || date == DateOnly.FromDateTime(DateTime.Today.AddDays(-2)))
+                    if (
+                        date == DateOnly.FromDateTime(DateTime.Today) ||
+                        date == DateOnly.FromDateTime(DateTime.Today.AddDays(-1)) ||
+                        date == DateOnly.FromDateTime(DateTime.Today.AddDays(-2)) ||
+                        date == DateOnly.FromDateTime(DateTime.Today.AddDays(-3)) ||
+                        date == DateOnly.FromDateTime(DateTime.Today.AddDays(-4)) ||
+                        date == DateOnly.FromDateTime(DateTime.Today.AddDays(-5))
+                    )
                     {
                         // Check if an entry exists for the date
                         if (ActiveCalendar.Get(date) == null)
