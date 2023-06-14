@@ -336,9 +336,9 @@ public class LifeTracker
         if (password == real_password)
         {
             Console.Clear();
-            AnsiConsole.Write(new Markup($"[green]Logged in as {username}[/]\n[green]Press any key to continue...[/]").Centered());
+            AnsiConsole.Write(new Markup($"[green]Logged in as {username}...[/]").Centered());
             Console.ReadKey();
             Console.Clear();
         }
     }
-    }   
+}   

@@ -35,7 +35,6 @@
             savebtn = new Button();
             date_display = new Label();
             short_summary_chars_counter = new Label();
-            detailed_summary_chars_counter = new Label();
             SuspendLayout();
             // 
             // short_summary_entry
@@ -61,10 +60,8 @@
             detailed_summary_entry.PlaceholderText = "Details - include anything you might want to remember";
             detailed_summary_entry.Size = new Size(776, 332);
             detailed_summary_entry.TabIndex = 1;
-            detailed_summary_entry.TextChanged += detailed_summary_entry_TextChanged;
             detailed_summary_entry.Enter += detailed_summary_entry_Enter;
             detailed_summary_entry.KeyDown += detailed_summary_entry_KeyDown;
-            detailed_summary_entry.KeyPress += detailed_summary_entry_KeyPress;
             // 
             // cancelbtn
             // 
@@ -109,22 +106,11 @@
             short_summary_chars_counter.TabIndex = 5;
             short_summary_chars_counter.Text = "0/115";
             // 
-            // detailed_summary_chars_counter
-            // 
-            detailed_summary_chars_counter.AutoSize = true;
-            detailed_summary_chars_counter.Location = new Point(758, 23);
-            detailed_summary_chars_counter.Name = "detailed_summary_chars_counter";
-            detailed_summary_chars_counter.Size = new Size(30, 15);
-            detailed_summary_chars_counter.TabIndex = 6;
-            detailed_summary_chars_counter.Text = "0/14";
-            detailed_summary_chars_counter.TextAlign = ContentAlignment.TopRight;
-            // 
             // EntryEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(801, 450);
-            Controls.Add(detailed_summary_chars_counter);
             Controls.Add(short_summary_chars_counter);
             Controls.Add(date_display);
             Controls.Add(savebtn);
@@ -148,6 +134,5 @@
         private Button savebtn;
         private Label date_display;
         private Label short_summary_chars_counter;
-        private Label detailed_summary_chars_counter;
     }
 }

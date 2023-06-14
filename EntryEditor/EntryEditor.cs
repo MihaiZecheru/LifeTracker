@@ -3,8 +3,6 @@ namespace EntryEditor;
 public partial class EntryEditor : Form
 {
     private int SHORT_SUMMARY_MAX_LENGTH = 115;
-    private int DETAILED_SUMMARY_MAX_LINE_LENGTH = 115;
-    private int DETAILED_SUMMARY_MAX_LINES = 14;
     private bool RequestSentPreviously = false;
 
     /// <summary>
@@ -42,7 +40,6 @@ public partial class EntryEditor : Form
         toolTip.SetToolTip(short_summary_entry, "One sentence summary - what was the main thing you did today?");
         toolTip.SetToolTip(detailed_summary_entry, "Details - include anything you might want to remember");
         toolTip.SetToolTip(short_summary_chars_counter, "Max characters for summary");
-        toolTip.SetToolTip(detailed_summary_chars_counter, "Max lines for details");
         toolTip.SetToolTip(date_display, "Date of entry");
     }
 
@@ -57,18 +54,6 @@ public partial class EntryEditor : Form
         if (e.KeyChar == (char)Keys.Enter)
         {
             detailed_summary_entry.Focus();
-        }
-    }
-
-    private void detailed_summary_entry_KeyPress(object sender, KeyPressEventArgs e)
-    {
-        for (int i = 0; i < detailed_summary_entry.Lines.Length; i++)
-        {
-            if (detailed_summary_entry.Lines[i].Length > DETAILED_SUMMARY_MAX_LINE_LENGTH)
-            {
-                detailed_summary_entry.Text = detailed_summary_entry.Text.Remove(detailed_summary_entry.GetFirstCharIndexFromLine(i) + detailed_summary_entry.Lines[i].Length - 1);
-                detailed_summary_entry.SelectionStart = detailed_summary_entry.GetFirstCharIndexFromLine(i) + detailed_summary_entry.Lines[i].Length;
-            }
         }
     }
 
@@ -121,11 +106,6 @@ public partial class EntryEditor : Form
         short_summary_chars_counter.Text = short_summary_entry.TextLength + "/" + SHORT_SUMMARY_MAX_LENGTH;
     }
 
-    private void detailed_summary_entry_TextChanged(object sender, EventArgs e)
-    {
-        detailed_summary_chars_counter.Text = detailed_summary_entry.Lines.Length + "/" + DETAILED_SUMMARY_MAX_LINES;
-    }
-
     private void WaitScreen()
     {
         Cursor = Cursors.WaitCursor;
@@ -162,11 +142,6 @@ public partial class EntryEditor : Form
         if (e.KeyCode == Keys.Escape)
         {
             cancelbtn.PerformClick();
-            e.SuppressKeyPress = true;
-        }
-
-        if (e.KeyCode == Keys.Enter && detailed_summary_entry.Lines.Length >= DETAILED_SUMMARY_MAX_LINES)
-        {
             e.SuppressKeyPress = true;
         }
     }
