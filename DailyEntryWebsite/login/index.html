@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/calendar.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica&family=Merriweather&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <title>LifeTracker | Login</title>
+</head>
+<body>
+  
+  <section class="login">
+    <div>
+      <img src="https://media.istockphoto.com/id/1281150061/vector/register-account-submit-access-login-password-username-internet-online-website-concept.jpg?s=612x612&w=0&k=20&c=9HWSuA9IaU4o-CK6fALBS5eaO1ubnsM08EOYwgbwGBo=" alt="Login image" width="100%">
+    </div>
+    <form action="#">
+      <div class="mb-3">
+        <label for="username-input" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username-input" aria-describedby="usernameHelp"> <!-- TODO: add a download link here -->
+        <div id="usernameHelp" class="form-text">Use the LifeTracker login you made on the app. Download LifeTracker <a href="asdkhasd" tabindex="-1">here</a></div>
+      </div>
+      <div class="mb-3">
+        <label for="password-input" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password-input">
+      </div>
+      <button id="login-btn" type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </section>
+
+  <div class="modal" tabindex="-1" id="login-failed-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login Failed</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Invalid username and/or password. Make sure you have LifeTracker installed and have created a login.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="download-lifetracker-btn" type="button" class="btn btn-primary">Download LifeTracker</button>
+          <button id="close-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function login(username, password) {
+      return await fetch (`https://lifetracker-7516f-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(realPassword => realPassword === password && username && password);
+    }
+
+    document.getElementById("login-btn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById("username-input").value;
+      const password = document.getElementById("password-input").value;
+
+      if (await login(username, password)) {
+        window.localStorage.setItem("username", username);
+        window.localStorage.setItem("password", password);
+        window.location.href = "/";
+      } else {
+        new bootstrap.Modal(document.getElementById("login-failed-modal")).show();
+      }
+    });
+
+    document.getElementById("download-lifetracker-btn").addEventListener("click", () => {
+      document.getElementById("close-btn").click();
+      const a = document.createElement("a");
+      // <!-- TODO: add a download link here -->
+      a.href = "https://www.youtube.com/";
+      a.target = "_blank";
+      a.click();
+    });
+  </script>
+
+  <style>
+    * {
+      font-family: 'Comfortaa';
+    }
+    
+    .login {
+      margin: 0 auto;
+      width: 25%;
+      padding-top: 3rem;
+    }
+
+    #login-btn {
+      width: 100%;
+    }
+
+    .image {
+      margin: 0 auto;
+      padding-top: 10%;
+    }
+  </style>
+
+</body>
+</html>
