@@ -4,8 +4,6 @@ using Spectre.Console;
 using System.Net;
 using FireSharp.Config;
 using FireSharp.Response;
-using System.Windows.Forms.VisualStyles;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 
 namespace LifeTracker;
