@@ -5,6 +5,8 @@ using System.Net;
 using FireSharp.Config;
 using FireSharp.Response;
 using System.Windows.Forms.VisualStyles;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 
 namespace LifeTracker;
 
@@ -17,6 +19,7 @@ public class LifeTracker
         BasePath = "https://lifetracker-7516f-default-rtdb.firebaseio.com/"
     });
 
+    [STAThread]
     public static void Main()
     {
         // Title screen
@@ -30,7 +33,7 @@ public class LifeTracker
 
         // Create and display calendar
         ActiveCalendar = new Calendar();
-        ActiveCalendar.Display();
+        ActiveCalendar.RefreshDisplay();
 
         // Listen to console resize events in order to update the calendar after resize
         StartConsoleResizeListener();
@@ -68,6 +71,9 @@ public class LifeTracker
              * 
              * Ctrl + Right & Left arrows: next/previous year
              * Ctrl + Down & Up arrows: next/previous year
+             * 
+             * Alt + C: copy entry to clipboard
+             * Enter: write/edit entry
              */
 
             switch (keyinfo.Key)
@@ -94,6 +100,28 @@ public class LifeTracker
                     if (shift) ActiveCalendar.NextMonth();
                     else if (ctrl) ActiveCalendar.NextYear();
                     else ActiveCalendar.NextWeek();
+                    break;
+
+                case ConsoleKey.C:
+                    if (!keyinfo.Modifiers.HasFlag(ConsoleModifiers.Alt)) break;
+
+                    // Copy entry to clipboard
+                    Entry entry = ActiveCalendar.Get(ActiveCalendar.SelectedDate())!;
+                    if (entry != null)
+                    {
+                        // will look like this:
+                        /*
+                         * entry summary here
+                         * ------------------
+                         * 
+                         * entry details here
+                         */
+                        Clipboard.SetText($"{entry.Summary}\n{new String('-', entry.Summary.Length)}\n\n{entry.Details}");
+                        Console.Clear();
+                        AnsiConsole.Write(new Markup($"[green]Copied {entry.For.ToString().Replace('/', '-')} entry to clipboard[/]").Centered());
+                        Console.ReadKey();
+                        ActiveCalendar.RefreshDisplay();
+                    }
                     break;
 
                 case ConsoleKey.Enter:
@@ -123,7 +151,7 @@ public class LifeTracker
                         }
                     }
 
-                    break;
+                    break; 
             }
         }
     }
@@ -145,7 +173,7 @@ public class LifeTracker
                 // Update calendar, console window has been resized
                 x = Console.WindowWidth;
                 y = Console.WindowHeight;
-                ActiveCalendar.Display();
+                ActiveCalendar.RefreshDisplay();
             }
         }).Start();
     }
@@ -176,7 +204,7 @@ public class LifeTracker
     /// <param name="entry">The existing <see cref="Entry"/> to edit</param>
     private static void EditEntry(Entry entry)
     {
-        OpenEntryEditor(entry.OneSentenceSummary, entry.DetailedSummary, entry.For);
+        OpenEntryEditor(entry.Summary, entry.Details, entry.For);
         ListenForFormEvents(entry.For);
     }
 
