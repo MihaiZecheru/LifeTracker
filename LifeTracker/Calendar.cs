@@ -19,26 +19,6 @@ public class Calendar
             );
     }
 
-    private static string FormatDay(int day)
-    {
-        string dayString = day.ToString();
-        if (dayString.Length == 1) return "0" + dayString;
-        return dayString;
-    }
-
-    private static string FormatMonth(int month)
-    {
-        string monthString = month.ToString();
-        if (monthString.Length == 1) return "0" + monthString;
-        return monthString;
-    }
-
-    private static string FormatYear(int year)
-    {
-        string yearString = year.ToString();
-        if (yearString.Length == 1) return "0" + yearString;
-        return yearString;
-    }
 
     /// <summary>
     /// Show the calendar and the currently selected entry in the console. Used to update the calendar display
@@ -72,7 +52,7 @@ public class Calendar
                         new Text(
                             text: "No entry written " + (entryWrittenToday
                                 ? "today"
-                                : $"on {FormatDay(ActiveDate.Day)}-{FormatMonth(ActiveDate.Month)}-{FormatYear(ActiveDate.Year)}"),
+                                : $"on {ActiveDate.Month}-{ActiveDate.Day}-{ActiveDate.Year}"),
                             style: new Style(Color.DeepPink3)
                         ).Centered(),
                         new Rule().RuleStyle(new Style(Color.Yellow))
