@@ -66,9 +66,9 @@ public class Calendar
             DisplayLayout["EntryDisplay"].Update(
                 new Panel(
                     new Rows(
-                        new Text(selectedEntry?.OneSentenceSummary, new Style(Color.DeepPink3)).Centered(),
+                        new Text(selectedEntry?.Summary, new Style(Color.DeepPink3)).Centered(),
                         new Rule().RuleStyle(new Style(Color.Yellow)),
-                        new Text(selectedEntry?.DetailedSummary, new Style(Color.White)).LeftJustified()
+                        new Text(selectedEntry?.Details, new Style(Color.White)).LeftJustified()
                     )
                 ).Expand().BorderColor(Color.Yellow)
             );

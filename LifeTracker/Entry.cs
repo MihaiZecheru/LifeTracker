@@ -3,18 +3,18 @@
 public class Entry
 {
     /// <summary>
-    /// The set of chars used to separate the <see cref="OneSentenceSummary"/> and <see cref="DetailedSummary"/> in the file containing the <see cref="Entry"/>
+    /// The set of chars used to separate the <see cref="Summary"/> and <see cref="Details"/> in the file containing the <see cref="Entry"/>
     /// </summary>
     public static readonly string SEP = "{<@SEP>}";
 
     /// <summary>
-    /// One-sentence summary of what happened on this day
+    /// Answer to the prompt: Summary - What do you want to remember doing today?
     /// </summary>
-    public string OneSentenceSummary { get; }
+    public string Summary { get; }
     /// <summary>
-    /// Broader, more detailed summary of what happened on this day
+    /// Answer to the prompt: Details - describe your day
     /// </summary>
-    public string DetailedSummary { get; }
+    public string Details { get; }
     /// <summary>
     /// What date is this <see cref="Entry"/> for?
     /// </summary>
@@ -23,13 +23,13 @@ public class Entry
     /// <summary>
     /// Create an <see cref="Entry"/> object
     /// </summary>
-    /// <param name="oneSentenceSummary">A one-sentence summary of what happened on that day</param>
-    /// <param name="detailedSummary">A more in-depth summary of what happened on that day</param>
+    /// <param name="summary">A summary of what happened on that day</param>
+    /// <param name="details">The details describing what happened on that day</param>
     /// <param name="_for">The day this entry is for</param>
-    public Entry(string oneSentenceSummary, string detailedSummary, DateOnly _for)
+    public Entry(string summary, string details, DateOnly _for)
     {
-        OneSentenceSummary = oneSentenceSummary;
-        DetailedSummary = detailedSummary;
+        Summary = summary;
+        Details = details;
         For = _for;
     }
 
@@ -41,8 +41,8 @@ public class Entry
     public Entry(string filepath, DateOnly date)
     {
         string[] lines = File.ReadAllText(filepath).Split(SEP);
-        OneSentenceSummary = lines[0];
-        DetailedSummary = lines[1];
+        Summary = lines[0];
+        Details = lines[1];
         For = date;
     }
 
@@ -51,6 +51,6 @@ public class Entry
     /// </summary>
     public override string ToString()
     {
-        return $"{OneSentenceSummary}{SEP}{DetailedSummary}";
+        return $"{Summary}{SEP}{Details}";
     }
 }
