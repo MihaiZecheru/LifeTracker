@@ -22,8 +22,8 @@ public partial class EntryEditor : Form
     public EntryEditor(string short_summary, string detailed_summary, string stringdate)
     {
         InitializeComponent();
-        short_summary_entry.Text = short_summary;
-        detailed_summary_entry.Text = detailed_summary;
+        summary_entry.Text = short_summary;
+        details_entry.Text = detailed_summary;
         date_display.Text = stringdate;
         date_display.Location = new Point((this.Width - date_display.Width) / 2, date_display.Location.Y);
         ToolTips();
@@ -37,9 +37,9 @@ public partial class EntryEditor : Form
         ToolTip toolTip = new ToolTip();
         toolTip.SetToolTip(cancelbtn, "Cancel (Esc)");
         toolTip.SetToolTip(savebtn, "Save (Ctrl + S)");
-        toolTip.SetToolTip(short_summary_entry, "One sentence summary - what was the main thing you did today?");
-        toolTip.SetToolTip(detailed_summary_entry, "Details - include anything you might want to remember");
-        toolTip.SetToolTip(short_summary_chars_counter, "Max characters for summary");
+        toolTip.SetToolTip(summary_entry, "Summary - what do you want to remember doing today?");
+        toolTip.SetToolTip(details_entry, "Details - describe your day");
+        toolTip.SetToolTip(summary_chars_counter, "Max characters for summary");
         toolTip.SetToolTip(date_display, "Date of entry");
     }
 
@@ -53,7 +53,7 @@ public partial class EntryEditor : Form
     {
         if (e.KeyChar == (char)Keys.Enter)
         {
-            detailed_summary_entry.Focus();
+            details_entry.Focus();
         }
     }
 
@@ -67,15 +67,15 @@ public partial class EntryEditor : Form
 
     private async void savebtn_Click(object sender, EventArgs e)
     {
-        if (short_summary_entry.Text.Length == 0)
+        if (summary_entry.Text.Length == 0)
         {
-            short_summary_entry.Focus();
+            summary_entry.Focus();
             return;
         }
 
         WaitScreen();
 
-        await HttpServer.SendEntry(short_summary_entry.Text, detailed_summary_entry.Text);
+        await HttpServer.SendEntry(summary_entry.Text, details_entry.Text);
         RequestSentPreviously = true;
         this.Close();
     }
@@ -103,7 +103,7 @@ public partial class EntryEditor : Form
 
     private void short_summary_entry_TextChanged(object sender, EventArgs e)
     {
-        short_summary_chars_counter.Text = short_summary_entry.TextLength + "/" + SHORT_SUMMARY_MAX_LENGTH;
+        summary_chars_counter.Text = summary_entry.TextLength + "/" + SHORT_SUMMARY_MAX_LENGTH;
     }
 
     private void WaitScreen()
@@ -148,11 +148,11 @@ public partial class EntryEditor : Form
 
     private void short_summary_entry_Enter(object sender, EventArgs e)
     {
-        short_summary_entry.SelectionStart = short_summary_entry.TextLength;
+        summary_entry.SelectionStart = summary_entry.TextLength;
     }
 
     private void detailed_summary_entry_Enter(object sender, EventArgs e)
     {
-        detailed_summary_entry.SelectionStart = detailed_summary_entry.TextLength;
+        details_entry.SelectionStart = details_entry.TextLength;
     }
 }

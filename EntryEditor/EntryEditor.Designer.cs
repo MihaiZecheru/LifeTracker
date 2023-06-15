@@ -29,39 +29,39 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EntryEditor));
-            short_summary_entry = new TextBox();
-            detailed_summary_entry = new TextBox();
+            summary_entry = new TextBox();
+            details_entry = new TextBox();
             cancelbtn = new Button();
             savebtn = new Button();
             date_display = new Label();
-            short_summary_chars_counter = new Label();
+            summary_chars_counter = new Label();
             SuspendLayout();
             // 
-            // short_summary_entry
+            // summary_entry
             // 
-            short_summary_entry.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            short_summary_entry.Location = new Point(12, 41);
-            short_summary_entry.MaxLength = 115;
-            short_summary_entry.Name = "short_summary_entry";
-            short_summary_entry.PlaceholderText = "One sentence summary - what was the main thing you did today?";
-            short_summary_entry.Size = new Size(776, 22);
-            short_summary_entry.TabIndex = 0;
-            short_summary_entry.TextChanged += short_summary_entry_TextChanged;
-            short_summary_entry.Enter += short_summary_entry_Enter;
-            short_summary_entry.KeyDown += short_summary_entry_KeyDown;
-            short_summary_entry.KeyPress += short_summary_entry_KeyPress;
+            summary_entry.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            summary_entry.Location = new Point(12, 41);
+            summary_entry.MaxLength = 115;
+            summary_entry.Name = "summary_entry";
+            summary_entry.PlaceholderText = "Summary - what do you want to remember doing today?";
+            summary_entry.Size = new Size(776, 22);
+            summary_entry.TabIndex = 0;
+            summary_entry.TextChanged += short_summary_entry_TextChanged;
+            summary_entry.Enter += short_summary_entry_Enter;
+            summary_entry.KeyDown += short_summary_entry_KeyDown;
+            summary_entry.KeyPress += short_summary_entry_KeyPress;
             // 
-            // detailed_summary_entry
+            // details_entry
             // 
-            detailed_summary_entry.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            detailed_summary_entry.Location = new Point(12, 69);
-            detailed_summary_entry.Multiline = true;
-            detailed_summary_entry.Name = "detailed_summary_entry";
-            detailed_summary_entry.PlaceholderText = "Details - include anything you might want to remember";
-            detailed_summary_entry.Size = new Size(776, 332);
-            detailed_summary_entry.TabIndex = 1;
-            detailed_summary_entry.Enter += detailed_summary_entry_Enter;
-            detailed_summary_entry.KeyDown += detailed_summary_entry_KeyDown;
+            details_entry.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            details_entry.Location = new Point(12, 69);
+            details_entry.Multiline = true;
+            details_entry.Name = "details_entry";
+            details_entry.PlaceholderText = "Details - describe your day";
+            details_entry.Size = new Size(776, 332);
+            details_entry.TabIndex = 1;
+            details_entry.Enter += detailed_summary_entry_Enter;
+            details_entry.KeyDown += detailed_summary_entry_KeyDown;
             // 
             // cancelbtn
             // 
@@ -97,26 +97,26 @@
             date_display.TabIndex = 4;
             date_display.Text = "May 4, 2023";
             // 
-            // short_summary_chars_counter
+            // summary_chars_counter
             // 
-            short_summary_chars_counter.AutoSize = true;
-            short_summary_chars_counter.Location = new Point(12, 23);
-            short_summary_chars_counter.Name = "short_summary_chars_counter";
-            short_summary_chars_counter.Size = new Size(36, 15);
-            short_summary_chars_counter.TabIndex = 5;
-            short_summary_chars_counter.Text = "0/115";
+            summary_chars_counter.AutoSize = true;
+            summary_chars_counter.Location = new Point(12, 23);
+            summary_chars_counter.Name = "summary_chars_counter";
+            summary_chars_counter.Size = new Size(36, 15);
+            summary_chars_counter.TabIndex = 5;
+            summary_chars_counter.Text = "0/115";
             // 
             // EntryEditor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(801, 450);
-            Controls.Add(short_summary_chars_counter);
+            Controls.Add(summary_chars_counter);
             Controls.Add(date_display);
             Controls.Add(savebtn);
             Controls.Add(cancelbtn);
-            Controls.Add(detailed_summary_entry);
-            Controls.Add(short_summary_entry);
+            Controls.Add(details_entry);
+            Controls.Add(summary_entry);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "EntryEditor";
             Text = "Entry Editor";
@@ -128,11 +128,11 @@
 
         #endregion
 
-        private TextBox short_summary_entry;
-        private TextBox detailed_summary_entry;
+        private TextBox summary_entry;
+        private TextBox details_entry;
         private Button cancelbtn;
         private Button savebtn;
         private Label date_display;
-        private Label short_summary_chars_counter;
+        private Label summary_chars_counter;
     }
 }
