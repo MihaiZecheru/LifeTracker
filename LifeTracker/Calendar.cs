@@ -23,7 +23,7 @@ public class Calendar
     /// <summary>
     /// Show the calendar and the currently selected entry in the console. Used to update the calendar display
     /// </summary>
-    public void Display()
+    public void RefreshDisplay()
     {
         Console.Clear();
         Console.Write("\x1b[3J");
@@ -113,7 +113,7 @@ public class Calendar
         if (!Directory.Exists(parent_dir)) Directory.CreateDirectory(parent_dir);
         File.WriteAllText(filepath, entry.ToString());
 
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class Calendar
     public void NextDay()
     {
         ActiveDate = ActiveDate.AddDays(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public class Calendar
     public void NextWeek()
     {
         ActiveDate = ActiveDate.AddDays(7);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public class Calendar
     public void NextMonth()
     {
         ActiveDate = ActiveDate.AddMonths(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class Calendar
     public void NextYear()
     {
         ActiveDate = ActiveDate.AddYears(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ public class Calendar
     public void PreviousDay()
     {
         ActiveDate = ActiveDate.AddDays(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -167,7 +167,7 @@ public class Calendar
     public void PreviousWeek()
     {
         ActiveDate = ActiveDate.AddDays(-7);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public class Calendar
     public void PreviousMonth()
     {
         ActiveDate = ActiveDate.AddMonths(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class Calendar
     public void PreviousYear()
     {
         ActiveDate = ActiveDate.AddYears(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
