@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/calendar.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica&family=Merriweather&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <title>LifeTracker</title>
+</head>
+<body>
+  
+  <section class="entry">
+    <div class="mb-3">
+      <label for="brief-summary-input" class="form-label">Brief Summary</label>
+      <input type="email" class="form-control" id="brief-summary-input" placeholder="What do you want to remember doing today?">
+    </div>
+    <div class="mb-3">
+      <label for="details-input" class="form-label">Details</label>
+      <textarea class="form-control" id="details-input" rows="3" placeholder="Describe your day"></textarea>
+    </div>
+  </section>
+
+  <script>
+    async function login(username, password) {
+      return await fetch (`https://lifetracker-7516f-default-rtdb.firebaseio.com/users/${username}.json`)
+        .then(response => response.json())
+        .then(realPassword => realPassword === password && username && password);
+    }
+
+    (async () => {
+      if (!await login(window.localStorage.getItem("username"), window.localStorage.getItem("password"))) {
+        window.location.href = "/login";
+      }
+    })();
+  </script>
+
+  <style>
+    .entry {
+      font-family: 'Comfortaa';
+      font-size: 1.5rem;
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 1rem;
+    }
+  </style>
+
+</body>
