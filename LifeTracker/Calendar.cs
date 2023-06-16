@@ -19,31 +19,11 @@ public class Calendar
             );
     }
 
-    private static string FormatDay(int day)
-    {
-        string dayString = day.ToString();
-        if (dayString.Length == 1) return "0" + dayString;
-        return dayString;
-    }
-
-    private static string FormatMonth(int month)
-    {
-        string monthString = month.ToString();
-        if (monthString.Length == 1) return "0" + monthString;
-        return monthString;
-    }
-
-    private static string FormatYear(int year)
-    {
-        string yearString = year.ToString();
-        if (yearString.Length == 1) return "0" + yearString;
-        return yearString;
-    }
 
     /// <summary>
     /// Show the calendar and the currently selected entry in the console. Used to update the calendar display
     /// </summary>
-    public void Display()
+    public void RefreshDisplay()
     {
         Console.Clear();
         Console.Write("\x1b[3J");
@@ -72,7 +52,7 @@ public class Calendar
                         new Text(
                             text: "No entry written " + (entryWrittenToday
                                 ? "today"
-                                : $"on {FormatDay(ActiveDate.Day)}-{FormatMonth(ActiveDate.Month)}-{FormatYear(ActiveDate.Year)}"),
+                                : $"on {ActiveDate.Month}-{ActiveDate.Day}-{ActiveDate.Year}"),
                             style: new Style(Color.DeepPink3)
                         ).Centered(),
                         new Rule().RuleStyle(new Style(Color.Yellow))
@@ -86,9 +66,9 @@ public class Calendar
             DisplayLayout["EntryDisplay"].Update(
                 new Panel(
                     new Rows(
-                        new Text(selectedEntry?.OneSentenceSummary, new Style(Color.DeepPink3)).Centered(),
+                        new Text(selectedEntry?.Summary, new Style(Color.DeepPink3)).Centered(),
                         new Rule().RuleStyle(new Style(Color.Yellow)),
-                        new Text(selectedEntry?.DetailedSummary, new Style(Color.White)).LeftJustified()
+                        new Text(selectedEntry?.Details, new Style(Color.White)).LeftJustified()
                     )
                 ).Expand().BorderColor(Color.Yellow)
             );
@@ -133,7 +113,7 @@ public class Calendar
         if (!Directory.Exists(parent_dir)) Directory.CreateDirectory(parent_dir);
         File.WriteAllText(filepath, entry.ToString());
 
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -142,7 +122,7 @@ public class Calendar
     public void NextDay()
     {
         ActiveDate = ActiveDate.AddDays(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -151,7 +131,7 @@ public class Calendar
     public void NextWeek()
     {
         ActiveDate = ActiveDate.AddDays(7);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -160,7 +140,7 @@ public class Calendar
     public void NextMonth()
     {
         ActiveDate = ActiveDate.AddMonths(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -169,7 +149,7 @@ public class Calendar
     public void NextYear()
     {
         ActiveDate = ActiveDate.AddYears(1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -178,7 +158,7 @@ public class Calendar
     public void PreviousDay()
     {
         ActiveDate = ActiveDate.AddDays(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -187,7 +167,7 @@ public class Calendar
     public void PreviousWeek()
     {
         ActiveDate = ActiveDate.AddDays(-7);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -196,7 +176,7 @@ public class Calendar
     public void PreviousMonth()
     {
         ActiveDate = ActiveDate.AddMonths(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
@@ -205,7 +185,7 @@ public class Calendar
     public void PreviousYear()
     {
         ActiveDate = ActiveDate.AddYears(-1);
-        Display();
+        RefreshDisplay();
     }
 
     /// <summary>
