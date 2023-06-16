@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/static/calendar.ico" type="image/x-icon">
+  <link rel="icon" href="/DailyEntryWebsite/static/calendar.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica&family=Merriweather&display=swap" rel="stylesheet">
@@ -14,14 +14,17 @@
 <body>
   
   <section class="entry">
+
     <div class="mb-3">
       <label for="brief-summary-input" class="form-label">Brief Summary</label>
       <input type="email" class="form-control" id="brief-summary-input" placeholder="What do you want to remember doing today?">
     </div>
-    <div class="mb-3">
+    <div id="textbox-container" class="mb-3">
       <label for="details-input" class="form-label">Details</label>
-      <textarea class="form-control" id="details-input" rows="3" placeholder="Describe your day"></textarea>
+      <textarea class="form-control mb-3" id="details-input" rows="3" placeholder="Describe your day"></textarea>
+      <button type="button" class="btn btn-primary">Submit</button>
     </div>
+
   </section>
 
   <script>
@@ -38,14 +41,134 @@
     })();
   </script>
 
+  <script>
+    function getFormattedDate() {
+      const date = new Date();
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${month}-${day}-${year}`;
+    }
+  </script>
+
   <style>
-    .entry {
+    * {
       font-family: 'Comfortaa';
+    }
+    
+    .entry {
       font-size: 1.5rem;
       margin: 0 auto;
       max-width: 800px;
       padding: 1rem;
+      height: 100vh;
+    }
+
+    #textbox-container {
+      height: calc(100% - 5.125rem - 2.5rem);
+    }
+
+    textarea {
+      resize: none;
+      height: calc(100% - 2.375rem - 2.25rem);
+    }
+    
+    button {
+      width: 100%!important;
     }
   </style>
+
+  <script>
+    function setExistingEntry(summary, details) {
+      const detailsbox = document.getElementById("details-input");
+      const summarybox = document.getElementById("brief-summary-input");
+      const submitbtn = document.querySelector("button");
+      summarybox.value = summary;
+      detailsbox.value = details;
+      summarybox.disabled = true;
+      detailsbox.disabled = true;
+      submitbtn.disabled = false;
+      submitbtn.classList.remove("btn-primary");
+      submitbtn.classList.add("btn-secondary");
+      submitbtn.innerText = "Edit";
+    }
+
+    function edit() {
+      const summarybox = document.getElementById("brief-summary-input");
+      const detailsbox = document.getElementById("details-input");
+      const submitbtn = document.querySelector("button");
+
+      summarybox.disabled = false;
+      detailsbox.disabled = false;
+      submitbtn.disabled = false;
+      submitbtn.innerText = "Submit";
+    }
+  </script>
+
+  <!-- If the user has already made his entry for today, fill the inputs in with his entry -->
+  <script>
+    fetch(`https://lifetracker-7516f-default-rtdb.firebaseio.com/website-entries-to-sync/${window.localStorage.getItem("username")}/${getFormattedDate()}.json`).then(response => response.json()).then(data => {
+      if (data) {
+        setExistingEntry(data.summary, data.details);
+        document.getElementById("brief-summary-input").focus();
+      } else {
+        edit();
+      }
+    });
+  </script>
+
+  <script>
+    const summarybox = document.getElementById("brief-summary-input");
+    const detailsbox = document.getElementById("details-input");
+
+    function submit() {
+      const isEditBtn = submitBtn.innerText === "Edit";
+      if (isEditBtn) return edit();
+
+      const summary = summarybox.value;
+      const details = detailsbox.value;
+
+      if (!summary || !details) new bootstrap.Modal(document.getElementById("error-modal")).show();
+
+      summarybox.disabled = true;
+      detailsbox.disabled = true;
+      document.querySelector("button").disabled = true;
+
+      fetch(`https://lifetracker-7516f-default-rtdb.firebaseio.com/website-entries-to-sync/${window.localStorage.getItem("username")}/${getFormattedDate()}.json`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          summary,
+          details,
+          date: getFormattedDate()
+        })
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+
+    const submitBtn = document.querySelector("button");
+
+    submitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      submit();
+    });
+
+    submitBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submit();
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+        document.getElementById("brief-summary-input").focus();
+      }
+    });
+
+    detailsbox.addEventListener("keydown", (e) => {
+      if (e.shift && e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("brief-summary-input").focus();
+      }
+    });
+  </script>
 
 </body>
