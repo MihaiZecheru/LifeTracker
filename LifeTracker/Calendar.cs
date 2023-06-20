@@ -105,7 +105,7 @@ public class Calendar
     /// Save an <see cref="Entry"/> for the given day in the calendar
     /// </summary>
     /// <param name="entry">The <see cref="Entry"/> to save</param>
-    public void SetEntry(Entry entry)
+    public void SaveEntry(Entry entry)
     {
         string parent_dir = $@"C:/LifeTracker/Entry/{entry.For.Year}/{entry.For.Month}/";
         string filepath = $@"C:/LifeTracker/Entry/{entry.For.Year}/{entry.For.Month}/{entry.For.Day}.entry";
