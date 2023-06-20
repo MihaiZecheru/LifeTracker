@@ -53,22 +53,22 @@ public class UserStatistics
         TotalEntries = Convert.ToInt32(lines[(int)UserStatisticsFile.TotalEntriesIndex]);
 
         LongestStreak = new DateRange(
-            start: StringToDateOnly.Convert(lines[(int)UserStatisticsFile.LongestStreakStartIndex]),
-            end: StringToDateOnly.Convert(lines[(int)UserStatisticsFile.LongestStreakEndIndex]),
+            start: DateOnly.Parse(lines[(int)UserStatisticsFile.LongestStreakStartIndex]),
+            end: DateOnly.Parse(lines[(int)UserStatisticsFile.LongestStreakEndIndex]),
             length: Convert.ToInt32(lines[(int)UserStatisticsFile.LongestStreakLengthIndex])
         );
 
         CurrentStreak = new DateRange(
-            start: StringToDateOnly.Convert(lines[(int)UserStatisticsFile.CurrentStreakStartIndex]),
-            end: StringToDateOnly.Convert(lines[(int)UserStatisticsFile.CurrentStreakStartIndex]),
+            start: DateOnly.Parse(lines[(int)UserStatisticsFile.CurrentStreakStartIndex]),
+            end: DateOnly.Parse(lines[(int)UserStatisticsFile.CurrentStreakStartIndex]),
             length: Convert.ToInt32(lines[(int)UserStatisticsFile.CurrentStreakLengthIndex])
         );
 
-        FirstEntryDate = StringToDateOnly.Convert(lines[(int)UserStatisticsFile.FirstEntryDateIndex]);
-        LastEntryDate = StringToDateOnly.Convert(lines[(int)UserStatisticsFile.LastEntryDateIndex]);
+        FirstEntryDate = DateOnly.Parse(lines[(int)UserStatisticsFile.FirstEntryDateIndex]);
+        LastEntryDate = DateOnly.Parse(lines[(int)UserStatisticsFile.LastEntryDateIndex]);
         
         string entryDatesLine = lines[(int)UserStatisticsFile.EntryDatesIndex];
-        EntryDates = entryDatesLine.Split("{<@SEP>}").Select(date => StringToDateOnly.Convert(date)).ToList();
+        EntryDates = entryDatesLine.Split("{<@SEP>}").Select(date => DateOnly.Parse(date)).ToList();
     }
 
     /// <summary>
