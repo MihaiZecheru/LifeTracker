@@ -35,7 +35,7 @@ public class LifeTracker
         ActiveCalendar.RefreshDisplay();
 
         // Get entries written externally on the website
-        SyncEntries();
+        SyncEntries().GetAwaiter().GetResult();
 
         // Listen to console resize events in order to update the calendar after resize
         StartConsoleResizeListener();
@@ -153,7 +153,7 @@ public class LifeTracker
                         }
                     }
 
-                    break; 
+                    break;
             }
         }
     }
@@ -185,7 +185,8 @@ public class LifeTracker
     /// </summary>
     private static void OpenEntryEditor(string short_summary, string detailed_summary, DateOnly date)
     {
-        new Thread(() => {
+        new Thread(() =>
+        {
             EntryEditor.Program.Main(short_summary, detailed_summary, date);
         }).Start();
     }
@@ -195,7 +196,8 @@ public class LifeTracker
     /// </summary>
     private static void OpenEntryEditor(DateOnly date)
     {
-        new Thread(() => {
+        new Thread(() =>
+        {
             EntryEditor.Program.Main(date);
         }).Start();
     }
@@ -250,7 +252,7 @@ public class LifeTracker
             string detailed_summary = req.QueryString.GetValues("detailed_summary")![0];
 
             Entry entry = new Entry(short_summary, detailed_summary, date);
-            ActiveCalendar.SetEntry(entry);
+            ActiveCalendar.SaveEntry(entry);
             ListenForKeypress = true;
         }
         // EntryEditor has been closed
@@ -287,7 +289,8 @@ public class LifeTracker
             if (await UsernameExists(username))
             {
                 AnsiConsole.Markup("[red]Username already exists[/]\n");
-            } else break;
+            }
+            else break;
         }
 
         string password;
@@ -369,7 +372,7 @@ public class LifeTracker
             AnsiConsole.Write(new Markup($"[green]Logged in as {username}...[/]").Centered());
             Console.ReadKey();
             Console.Clear();
-            return Username;
+            return username;
         }
 
         AnsiConsole.Write(new Markup("[red]Password invalid. Update login.txt file[/]"));
@@ -377,4 +380,30 @@ public class LifeTracker
         Application.Exit();
         return string.Empty;
     }
-}   
+
+    /// <summary>
+    /// If the user has completed any of his entries outside of this console application on the website, 
+    /// sync them to the <see cref="ActiveCalendar"/> and save them to the LifeTracker/Entries folder
+    /// </summary>
+    /// <returns>A void Task that must be awaited</returns>
+    private static async Task SyncEntries()
+    {
+        FirebaseResponse response = await client.GetAsync($"website-entries-to-sync/{Username}");
+        Dictionary<string, Dictionary<string, string>> entries = response.ResultAs<Dictionary<string, Dictionary<string, string>>>();
+        if (entries == null) return;
+        foreach (KeyValuePair<string, Dictionary<string, string>> kvp in entries)
+        {
+            string strdate = kvp.Key;
+            DateOnly date = DateOnly.Parse(strdate);
+            string summary = kvp.Value["summary"];
+            string details = kvp.Value["details"];
+
+            // Save entry
+            Entry entry = new Entry(summary, details, date);
+            ActiveCalendar.SaveEntry(entry);
+
+            // Delete entry from website to prevent accidentally syncing twice
+            await client.DeleteAsync($"website-entries-to-sync/{Username}/{strdate}");
+        }
+    }
+}
