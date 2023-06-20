@@ -16,6 +16,7 @@ public class LifeTracker
         AuthSecret = "AIzaSyCU_WVbyDAIqNJvm6X3lhJ0dTAAuHWETZM",
         BasePath = "https://lifetracker-7516f-default-rtdb.firebaseio.com/"
     });
+    private static string Username { get; set; } = "";
 
     [STAThread]
     public static void Main()
@@ -26,12 +27,15 @@ public class LifeTracker
         Console.ReadKey();
         Console.Clear();
 
-        // Make sure the user is logged in, and if he isn't, log him in
-        Login().GetAwaiter().GetResult();
+        // Make sure the user is logged in, and if he isn't, log him in. If the login fails the application will quit
+        Username = Login().GetAwaiter().GetResult();
 
         // Create and display calendar
         ActiveCalendar = new Calendar();
         ActiveCalendar.RefreshDisplay();
+
+        // Get entries written externally on the website
+        SyncEntries();
 
         // Listen to console resize events in order to update the calendar after resize
         StartConsoleResizeListener();
@@ -344,8 +348,8 @@ public class LifeTracker
     /// <summary>
     /// Logs the user into LifeTracker
     /// </summary>
-    /// <returns>A Task that must be awaited, as the application will exit if the login is incorrect</returns>
-    private static async Task Login()
+    /// <returns>The username. The result must be awaited, otherwise the application will exit if the login is incorrect</returns>
+    private static async Task<string> Login()
     {
         Dictionary<string, string> login = GetSavedLogin();
         string username = login["username"];
@@ -356,7 +360,7 @@ public class LifeTracker
 
         if (real_password == null)
         {
-            await CreateLogin(); return;
+            return (await CreateLogin())["username"];
         }
 
         if (password == real_password)
@@ -365,6 +369,12 @@ public class LifeTracker
             AnsiConsole.Write(new Markup($"[green]Logged in as {username}...[/]").Centered());
             Console.ReadKey();
             Console.Clear();
+            return Username;
         }
+
+        AnsiConsole.Write(new Markup("[red]Password invalid. Update login.txt file[/]"));
+        Console.ReadKey();
+        Application.Exit();
+        return string.Empty;
     }
 }   
