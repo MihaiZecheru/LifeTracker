@@ -28,6 +28,12 @@
   </section>
 
   <script>
+    const fulldate = new Date().toDateString();
+    const shortenedDate = fulldate.substring(fulldate.indexOf(" ") + 1);
+    document.getElementById("brief-summary-input").placeholder = `What do you want to remember doing today, ${shortenedDate}?`;
+  </script>
+
+  <script>
     async function login(username, password) {
       return await fetch (`https://lifetracker-7516f-default-rtdb.firebaseio.com/users/${username}.json`)
         .then(response => response.json())
